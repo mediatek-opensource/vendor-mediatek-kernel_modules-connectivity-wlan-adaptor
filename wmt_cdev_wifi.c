@@ -142,7 +142,8 @@ static int atoh(const char *str, uint32_t *hval)
 	unsigned int i;
 	uint32_t val = 0;
 
-	WIFI_INFO_FUNC("*str : %s, len = %d\n", str, strlen((const char *)str));
+	WIFI_INFO_FUNC("*str : %s, len = %zu\n", str,
+			strlen((const char *)str));
 	for (i = 0; i < strlen((const char *)str); i++) {
 		if (str[i] >= 'a' && str[i] <= 'f')
 			val = (val << 4) + (str[i] - 'a' + 10);
@@ -359,8 +360,10 @@ ssize_t WIFI_write(struct file *filp, const char __user *buf, size_t count, loff
 
 	copy_size = min(sizeof(local) - 1, count);
 	if (copy_from_user(local, buf, copy_size) == 0) {
-		WIFI_INFO_FUNC("WIFI_write %s, length %zu\n", local, count);
+		WIFI_INFO_FUNC("WIFI_write %s, length %zu, copy_size %d\n",
+			local, count, copy_size);
 
+		local[copy_size - 1] = '\0';
 		if (local[0] == '0') {
 			if (powered == 0) {
 				WIFI_INFO_FUNC("WIFI is already power off!\n");
