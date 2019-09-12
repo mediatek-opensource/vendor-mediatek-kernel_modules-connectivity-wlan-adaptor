@@ -360,7 +360,7 @@ ssize_t WIFI_write(struct file *filp, const char __user *buf, size_t count, loff
 
 	copy_size = min(sizeof(local) - 1, count);
 	if (copy_from_user(local, buf, copy_size) == 0) {
-		local[copy_size - 1] = '\0';
+		local[copy_size] = '\0';
 		WIFI_INFO_FUNC("WIFI_write %s, length %zu, copy_size %d\n",
 			local, count, copy_size);
 
